@@ -69,7 +69,11 @@ def get_time_series_data(fitbit_user, cat, resource, date=None):
         raise Ignore()
 
     fbusers = UserFitbit.objects.filter(fitbit_user=fitbit_user)
-    dates = {'base_date': 'today', 'period': 'max'}
+    default_period = utils.get_setting('FITAPP_DEFAULT_PERIOD')
+    if default_period:
+         dates = {'base_date': 'today', 'period': default_period}
+    else:
+        dates = {'base_date': 'today', 'period': 'max'}
     if date:
         dates = {'base_date': date, 'end_date': date}
     try:
